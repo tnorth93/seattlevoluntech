@@ -1,9 +1,6 @@
 package org.seattlevoluntech.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +9,7 @@ import java.util.Date;
 public class Project implements Serializable {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(name = "project_name")
     private String projectName;
@@ -23,7 +21,8 @@ public class Project implements Serializable {
     private String businessDescription;
     @Column(name = "creation_date")
     private Date creationDate;
-
+    @Column(name = "status")
+    private String status;
 
     public Long getId() {
         return id;
@@ -72,4 +71,8 @@ public class Project implements Serializable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 }

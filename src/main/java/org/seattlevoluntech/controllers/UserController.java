@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,13 +20,18 @@ public class UserController {
     @Autowired UsersRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("/user")
+    @RequestMapping("/users")
     public List<User> users(final HttpServletRequest request) {
-      logger.info(request.getRemoteUser());
-
-      return Lists.newArrayList(userRepository.findAll());
+        logger.info(request.getRemoteUser());
+        return Lists.newArrayList(userRepository.findAll());
     }
 
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET)
+    public User currentUserName(HttpServletRequest request) {
+        if (request.getRemoteUser() != null)
+            return userRepository.findByTokenId(request.getRemoteUser());
+        return new User();
+    }
 
     @RequestMapping("/findByLastName")
     public String fetchDataByLastName(@RequestParam("last_name") String lastName){
@@ -42,4 +48,6 @@ public class UserController {
 
         return result.toString();
     }
+
+
 }

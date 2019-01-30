@@ -2,13 +2,48 @@
 
 -- Table Definition ----------------------------------------------
 
-CREATE TABLE project (
+CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
     project_name text UNIQUE,
     project_description text,
     business_name text,
     business_description text,
-    creation_date timestamp without time zone DEFAULT now()
+    creation_date timestamp without time zone DEFAULT now(),
+    status text
+);
+
+CREATE TABLE skills (
+    id SERIAL PRIMARY KEY,
+    skill_name text UNIQUE,
+    description text
+);
+
+INSERT INTO skills VALUES
+    (1, 'frontend', null),
+    (2, 'backend', null),
+    (3, 'full stack', null),
+    (4, 'design', null);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    token_id text,
+    first_name text,
+    last_name text,
+    email text,
+    phone_number text,
+    status text,
+    bio text,
+    created timestamp without time zone DEFAULT now(),
+    updated timestamp
+);
+
+CREATE TABLE owners (
+    id SERIAL PRIMARY KEY,
+    user_id serial,
+    project_id serial,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+    FOREIGN KEY ("project_id") REFERENCES "public"."project"("id") ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
 -- Indices -------------------------------------------------------
